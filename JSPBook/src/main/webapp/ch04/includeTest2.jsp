@@ -7,9 +7,8 @@
 <title>Action Tag</title>
 </head>
 <body>
-	=<h2>forward 액션 테스트</h2>
-	<form action="forwardTest1.jsp" method="post">
-		<input type="hidden" name="forwardPage" value="forwardTest2.jsp">
-	</form>
+	<%
+		String name = request.getParameter("name");
+	%>
 </body>
 </html>

@@ -19,8 +19,10 @@
 	재시작 이후 추가되는 jsp는 재시작 불필요, 바로 적용 -->
 	
 	<%!
-		String greeting = "Welcome to Book Shopping Mall 안깨지고 잘 출력이 되어야함";
 		String tagline = "Welcome to Web Market!";
+	%>    
+	<%!
+		String greeting = "Welcome to Book Shopping Mall 안깨지고 잘 출력이 되어야함";
 	%>
 	<div class="container py-4">
 	
@@ -28,12 +30,11 @@
 		<%@ include file="menu.jsp" %>
     
     <!-- 중간 타이틀 영역 -->
-    <div class="p-5 mb-4 bg-body-tertiary rounded-3">
-      <div class="container-fluid py-5">
-        <h1 class="display-5 fw-bold"> <%= greeting %> </h1>
-        <p class="col-md-8 fs-4">BookMarket</p>
-      </div>
-    </div>
+    <!-- Quiz: 동적 include로 변경(title.jsp) -->
+    <jsp:include page="title.jsp">
+    	<jsp:param name= "greeting" value = "Welcome to Book Shopping Mall"/>
+    	<jsp:param name= "name" value = "BookMarket"/>
+    </jsp:include>
     
     <!-- 본문 영역 -->
     <div class="row align-items-md-stretch text-center">

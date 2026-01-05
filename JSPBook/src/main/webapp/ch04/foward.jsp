@@ -14,7 +14,7 @@
 	-->
 	
 	
-	<h2>foward 액션 태그<h2>
+	<h2>foward 액션 태그</h2>
 	<jsp:forward page="foward_date.jsp" />
 	<p> ------------------------------------- </p>
 </body>
