@@ -31,9 +31,9 @@
     
     <!-- 중간 타이틀 영역 -->
     <!-- Quiz: 동적 include로 변경(title.jsp) -->
-    <jsp:include page="title.jsp">
-    	<jsp:param name= "greeting" value = "Welcome to Book Shopping Mall"/>
-    	<jsp:param name= "name" value = "BookMarket"/>
+  	  <jsp:include page="title.jsp">
+ 	  	<jsp:param name= "title" value = "환영합니다."/>
+    	<jsp:param name= "sub" value = "BookMarket"/>
     </jsp:include>
     
     <!-- 본문 영역 -->

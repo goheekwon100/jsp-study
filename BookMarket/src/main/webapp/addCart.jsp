@@ -1,3 +1,5 @@
+<%@page import="java.sql.SQLException"%>
+<%@page import="java.sql.Connection"%>
 <%@page import="org.apache.tomcat.jakartaee.commons.lang3.ArrayUtils"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="dao.BookRepository"%>
@@ -12,16 +14,31 @@
 </head>
 <body>
 	<!-- 장바구니에 등록 처리하는 페이지 만들기 -->
+	<%@ include file="dbconn.jsp" %>
 	<%
 		// 1. 요청 파라미터 검증
 		String id = request.getParameter("id"); // 쿼리 스트링으로 보낸 데이터
-		// String bookId = request.getParameter("bookId"); // hidden input으로 보낸 데이터
 		if (id == null || id.trim().isEmpty()) { // id가 null인지 빈 문자열인지 검증
 			response.sendRedirect("books.jsp");
 			return;
 		}
 		
 		// 2. 도서 조회
+		
+		
+		try {
+			String sql = "SELECT * FROM book WHERE id = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();
+		} catch (SQLException e) {
+			out.println("SQLException e: " + e.getMessage());
+		} finally {
+			if (rs != null) rs.close();
+			if (pstmt != null) pstmt.close();
+			if (conn != null) conn.close();
+		}
+		
 		BookRepository dao = BookRepository.getInstance();
 		Book book = dao.getBookById(id);
 		if (book == null) {
@@ -39,7 +56,7 @@
 		
 		// 4. 장바구니에 동일 도서가 있으면 수량 +1, 없으면 새로 추가
 		boolean found = false;
-		for (Book item : cartList) {
+		if (rs.next()) {
 			if (item.getBookId().equals(book.getBookId())) {
 				int quantity = item.getQuantity();
 				item.setQuantity(++quantity);

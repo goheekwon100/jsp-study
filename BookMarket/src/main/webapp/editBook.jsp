@@ -9,39 +9,38 @@
     
 <!-- session이 연결되는 동안 도서 데이터를 공유하기 위해 사용 -->
 <%-- <jsp:useBean id="bookDAO" class="dao.BookRepository" scope="session"></jsp:useBean> --%>
-<%
-	// BookRepository 공유 객체로 변경
-	// 왜? 자바빈을 쓰면 해당 객체가 scope 내에 존재하면 재사용하고
-	// 존재하지 않으면 새롭게 생성하기 때문에 객체 내 데이터가 불일치가 발생
-	BookRepository bookDAO = BookRepository.getInstance();
-%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>도서목록</title>
-<!-- 부트스트랩 연결 -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-<!-- 로컬에서 직접 넣기 -->
-<!-- <link rel="stylesheet" href="resource/css/bookstrap.min.css"> -->
+	<meta charset="UTF-8">
+	<title>도서<%= request.getParameter("edit").equals("delete") ? "삭제" : "수정" %></title>
+	<!-- 부트스트랩 연결 -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+	<!-- 로컬에서 직접 넣기 -->
+	<!-- <link rel="stylesheet" href="resource/css/bookstrap.min.css"> -->
+	<script type="text/javascript">
+		function deleteConfirm(id) {
+			if (confirm('해당 도서를 삭제합니다!!')) {
+				window.location.href = './deleteBook.jsp?id=' + id;
+			}
+		}
+	</script>
 
 </head>
 <body>
-		<%@ include file="menu.jsp" %>
-  	  <jsp:include page="title.jsp">
- 	  	<jsp:param name= "title" value = "도서목록"/>
-    	<jsp:param name= "sub" value = "BookList"/>
-    </jsp:include>
-    
-    <%
-    	ArrayList<Book> listOfBooks = bookDAO.getAllBooks();
-    %>
+	<%
+	String edit = request.getParameter("edit");
+	%>
+	<%@ include file="menu.jsp" %>
+ 	  <jsp:include page="title.jsp">
+	  	<jsp:param name= "title" value = "도서편집"/>
+   		<jsp:param name= "sub" value = "EditBook"/>
+   	</jsp:include>
     
     <!-- 본문 영역 -->
     <%@ include file="dbconn.jsp" %>
     <div class="row align-items-md-stretch text-center">
     	<%
-    		// Quiz: book 테이블의 모든 데이터를 가져오도록 SELECT문 작성
     		try {
     			String sql = "SELECT * from book";
     			pstmt = conn.prepareStatement(sql);
@@ -51,9 +50,6 @@
     			%>
     				<div class="col-md-4">
     	        <div class="h-100 p-2">
-    	        	<!-- 도서 정보 -->
-    	        	<%-- <img alt="도서이미지" src="./resources/images/<%= book.getFilename() %>" style="width:250px; height:350px;"> --%>
-    	        	<!-- 외부 폴더 사용시 -->
     	        	<img alt="도서이미지" src="<%= request.getContextPath() %>/images/<%= rs.getString("b_fileName") %>" style="width:250px; height:350px;">
     	        	
     	        	<h5><b><%= rs.getString("b_name") %>></b></h5>
@@ -65,9 +61,16 @@
     	        	<p><%= rs.getString("b_description").substring(0, 60) %>...</p>
     	        	<p><%= rs.getString("b_unitPrice") %>원</p>
     	        	<p>
-    	        		<a href="./book.jsp?id=<%= rs.getString("b_id") %>" class="btn btn-secondary" role="button">
-    	        			상세정보 &raquo;
-    	        		</a>
+    	        		<% if ("update".equals(edit)) { %>
+    	        			<a href="./updateBook.jsp?id=<%=rs.getString("b_id") %>" class="btn btn-success" role="button">
+    	        				수정 &raquo;
+    	        			</a>
+    	        		<% } else if ("delete".equals(edit)) { %>
+    	        			<a href="javascript:void(0)" class="btn btn-danger" role="button"
+    	        					onclick="deleteConfirm('<%= rs.getString("b_id") %>')">
+    	        				삭제 &raquo;
+    	        			</a>
+    	        		<% } %>
     	        	</p>
     	        </div>
     	  		</div>

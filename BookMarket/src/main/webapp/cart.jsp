@@ -88,7 +88,7 @@
 						<td> <%= item.getUnitPrice() %> </td>
 						<td> <%= item.getQuantity() %> </td>
 						<td> <%= item.getUnitPrice() * item.getQuantity() %> </td>
-						<td> <a href='./cartItemDelete.jsp' class='btn btn-danger'>삭제</a> </td>
+						<td> <a href='removeCart.jsp?id=<%= item.getBookId() %>' class="badge text-bg-danger">삭제</a> </td>
 					</tr>
         <%
         	totalPrice += item.getUnitPrice() * item.getQuantity();
@@ -104,6 +104,7 @@
     		</tr>
     	</table>
     </div>
+    <a href="books.jsp" class="btn btn-secondary">쇼핑 계속하기 &raquo;</a>
  		
  	</div>
  		<!-- 푸터(바닥글) 영역 -->
