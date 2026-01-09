@@ -47,4 +47,11 @@ CREATE TABLE member (
 );
 
 SELECT * FROM member;
+
+UPDATE member 
+SET password = 'qwer1235', name = '고희', gender = '남', birth = '1998/01/01', mail = 'goh@naver.com', phone= '01096739991', address = '서대문구'
+WHERE id = 'goh' AND password = 'qwer1234';
+
+DELETE FROM member WHERE id = 'goh' AND password = 'qwer1235';		
+
 DROP TABLE member;
